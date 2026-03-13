@@ -1,4 +1,5 @@
-require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-ethers");
+require("@nomicfoundation/hardhat-verify");
 require("dotenv").config();
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0x0000000000000000000000000000000000000000000000000000000000000001";
@@ -7,23 +8,24 @@ const BASESCAN_API_KEY = process.env.BASESCAN_API_KEY || "";
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
-    version: "0.8.21",
+    version: "0.8.24",
     settings: {
       optimizer: {
         enabled: true,
         runs: 200,
       },
+      evmVersion: "cancun",
     },
   },
   networks: {
     base: {
       url: "https://mainnet.base.org",
-      accounts: [PRIVATE_KEY],
+      accounts: [`0x${PRIVATE_KEY.replace(/^0x/, "")}`],
       chainId: 8453,
     },
     "base-sepolia": {
       url: "https://sepolia.base.org",
-      accounts: [PRIVATE_KEY],
+      accounts: [`0x${PRIVATE_KEY.replace(/^0x/, "")}`],
       chainId: 84532,
     },
     hardhat: {
@@ -50,5 +52,6 @@ module.exports = {
     tests: "./test",
     cache: "./cache",
     artifacts: "./artifacts-hardhat",
+    scripts: "./hardhat-scripts",
   },
 };

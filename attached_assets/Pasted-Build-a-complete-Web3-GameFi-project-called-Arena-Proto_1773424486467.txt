@@ -1,0 +1,346 @@
+Build a complete Web3 GameFi project called Arena Protocol.
+
+The repository must compile, deploy, verify, and publish contracts on Base Mainnet (chainId 8453).
+
+Technologies to use:
+
+Solidity ^0.8.21  
+Hardhat  
+Ethers.js  
+OpenZeppelin Contracts  
+Node.js  
+Express  
+Next.js  
+TailwindCSS  
+Wagmi  
+RainbowKit  
+Telegram WebApp SDK  
+dotenv  
+
+--------------------------------
+
+PROJECT STRUCTURE
+
+/contracts
+ArenaCoin.sol
+ArenaFighterNFT.sol
+ArenaBattle.sol
+ArenaMarketplace.sol
+ArenaStaking.sol
+ArenaRewardVault.sol
+ArenaLeaderboard.sol
+
+/scripts
+deploy.js
+verify.js
+
+/backend
+server.js
+indexer.js
+
+/frontend
+Next.js app
+
+/hardhat.config.js
+/package.json
+/.env.example
+/README.md
+
+--------------------------------
+
+TOKEN CONTRACT — ArenaCoin
+
+Create an ERC20 token using OpenZeppelin.
+
+Name: ArenaCoin  
+Symbol: ARENA  
+
+Total supply:
+
+1,000,000 tokens minted to deployer.
+
+Functions:
+
+mint(address to,uint256 amount)
+
+burn(uint256 amount)
+
+--------------------------------
+
+NFT CONTRACT — ArenaFighterNFT
+
+ERC721 fighter characters.
+
+Name: Arena Fighter  
+Symbol: AFIGHT  
+
+Each fighter has attributes stored in a struct:
+
+strength
+speed
+intelligence
+wins
+losses
+rarity
+
+Rarity tiers:
+
+Common
+Rare
+Epic
+Legendary
+
+Stats generated pseudo-randomly.
+
+Function:
+
+mintFighter(address player)
+
+--------------------------------
+
+BATTLE ENGINE — ArenaBattle
+
+ArenaBattle interacts with:
+
+ArenaCoin
+ArenaFighterNFT
+ArenaRewardVault
+
+Battle rules:
+
+Entry fee:
+
+10 ARENA tokens
+
+Winner reward:
+
+18 ARENA tokens
+
+Burn:
+
+2 ARENA tokens
+
+Battle modes:
+
+PvE
+PvP
+
+Emit event:
+
+FightResult(address player,bool win,uint256 fighterId)
+
+--------------------------------
+
+STAKING CONTRACT — ArenaStaking
+
+Players can stake ARENA tokens.
+
+Functions:
+
+stake(uint256 amount)
+unstake()
+claimRewards()
+
+Rewards distributed daily.
+
+--------------------------------
+
+REWARD VAULT — ArenaRewardVault
+
+Stores reward pool.
+
+Functions:
+
+depositRewards(uint256 amount)
+withdrawRewards(uint256 amount)
+
+--------------------------------
+
+NFT MARKETPLACE — ArenaMarketplace
+
+Players can trade fighter NFTs using ARENA tokens.
+
+Functions:
+
+listNFT
+buyNFT
+cancelListing
+
+Marketplace fee:
+
+2%
+
+--------------------------------
+
+LEADERBOARD — ArenaLeaderboard
+
+Tracks player statistics:
+
+totalWins
+totalBattles
+totalRewards
+
+Function:
+
+getTopPlayers()
+
+--------------------------------
+
+DEPLOY SCRIPT
+
+scripts/deploy.js must:
+
+1 Deploy ArenaCoin
+2 Deploy ArenaFighterNFT
+3 Deploy ArenaRewardVault
+4 Deploy ArenaBattle
+5 Deploy ArenaStaking
+6 Deploy ArenaMarketplace
+7 Deploy ArenaLeaderboard
+
+Pass contract addresses correctly.
+
+Print deployed addresses.
+
+--------------------------------
+
+HARTHAT CONFIG
+
+Configure Solidity:
+
+0.8.21
+
+Configure Base Mainnet network:
+
+RPC:
+
+https://mainnet.base.org
+
+Load environment variables:
+
+PRIVATE_KEY
+BASESCAN_API_KEY
+
+--------------------------------
+
+VERIFICATION
+
+Include commands:
+
+npx hardhat verify --network base CONTRACT_ADDRESS
+
+For ArenaBattle include constructor parameters.
+
+--------------------------------
+
+BACKEND SERVER
+
+Create Node.js server.
+
+Responsibilities:
+
+index blockchain events
+update leaderboard
+store player stats
+
+Use Express and WebSockets.
+
+--------------------------------
+
+FRONTEND
+
+Create a Next.js frontend.
+
+Use:
+
+TailwindCSS
+Wagmi
+RainbowKit
+
+Screens:
+
+Home
+Mint Fighter
+Battle Arena
+Leaderboard
+Marketplace
+Profile
+
+--------------------------------
+
+TELEGRAM MINI APP
+
+Frontend must run inside Telegram.
+
+Use Telegram WebApp SDK.
+
+Features:
+
+Connect wallet
+Mint fighter
+Start battle
+Display win/lose animation
+Show ARENA rewards
+
+--------------------------------
+
+README
+
+Include instructions:
+
+1 install dependencies
+
+npm install
+
+2 configure environment
+
+.env
+
+PRIVATE_KEY=
+BASESCAN_API_KEY=
+
+3 compile contracts
+
+npx hardhat compile
+
+4 deploy to Base Mainnet
+
+npx hardhat run scripts/deploy.js --network base
+
+5 verify contracts
+
+npx hardhat verify --network base ADDRESS
+
+6 run backend server
+
+node backend/server.js
+
+7 start frontend
+
+npm run dev
+
+--------------------------------
+
+SECURITY
+
+Use OpenZeppelin libraries.
+
+Validate:
+
+NFT ownership
+token transfers
+stake amounts
+
+--------------------------------
+
+OUTPUT
+
+Generate a complete repository ready to:
+
+compile
+deploy
+verify
+publish
+run backend
+run frontend
+launch Telegram Mini App

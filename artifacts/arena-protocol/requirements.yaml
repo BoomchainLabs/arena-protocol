@@ -1,0 +1,31 @@
+packages:
+  "framer-motion": "For complex cyberpunk animations, battle sequences, and page transitions"
+  "clsx": "For conditional class name merging"
+  "tailwind-merge": "For merging tailwind classes safely"
+  "@twa-dev/sdk": "Telegram WebApp SDK integration"
+  "wagmi": "Web3 hooks and configuration"
+  "viem": "Ethereum primitives needed by wagmi"
+  "@tanstack/react-query": "Required for Wagmi and API hooks"
+  "@workspace/api-client-react": "Workspace API client"
+
+images:
+  - path: "artifacts/arena-protocol/public/images/cyber-city-bg.png"
+    description: "Dark, gritty cyberpunk city street at night with neon cyan and magenta signs, high contrast, atmospheric fog"
+    aspect_ratio: "16:9"
+  - path: "artifacts/arena-protocol/public/images/arena-bg.png"
+    description: "Futuristic glowing fighting ring in an underground cyberpunk stadium, neon grids on the floor, dark background"
+    aspect_ratio: "16:9"
+  - path: "artifacts/arena-protocol/public/images/fighter-1.png"
+    description: "Cyberpunk street fighter portrait, half robotic face, glowing neon blue eyes, wearing techwear jacket, dark background"
+    aspect_ratio: "1:1"
+  - path: "artifacts/arena-protocol/public/images/fighter-2.png"
+    description: "Female cyberpunk ninja portrait, glowing pink katana on back, augmented reality visor, neon lighting"
+    aspect_ratio: "1:1"
+  - path: "artifacts/arena-protocol/public/images/fighter-3.png"
+    description: "Heavy cybernetic brute portrait, massive metal arms, glowing red energy cores, industrial grunge background"
+    aspect_ratio: "1:1"
+
+notes:
+  - Expects @workspace/api-client-react to be available for importing generated React Query hooks
+  - Using a mock Wagmi configuration to ensure the UI renders without requiring physical wallet connections or complex project IDs during the initial preview
+  - Telegram WebApp SDK is initialized on load

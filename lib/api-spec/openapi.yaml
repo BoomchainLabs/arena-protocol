@@ -1,15 +1,22 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Arena Protocol API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: leaderboard
+    description: Leaderboard operations
+  - name: players
+    description: Player stats operations
+  - name: battles
+    description: Battle history operations
+  - name: market
+    description: Marketplace operations
 paths:
   /healthz:
     get:
@@ -24,6 +31,125 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /leaderboard:
+    get:
+      operationId: getLeaderboard
+      tags: [leaderboard]
+      summary: Get top players
+      description: Returns top players sorted by wins
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Leaderboard entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LeaderboardEntry"
+
+  /players/{address}:
+    get:
+      operationId: getPlayerStats
+      tags: [players]
+      summary: Get player stats
+      description: Returns stats for a given wallet address
+      parameters:
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Player stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerStats"
+        "404":
+          description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /battles:
+    get:
+      operationId: getBattleHistory
+      tags: [battles]
+      summary: Get recent battle history
+      description: Returns recent battles
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: address
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Battle history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BattleRecord"
+    post:
+      operationId: recordBattle
+      tags: [battles]
+      summary: Record a battle result
+      description: Records a battle result from an on-chain event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordBattleRequest"
+      responses:
+        "200":
+          description: Battle recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BattleRecord"
+
+  /market/listings:
+    get:
+      operationId: getMarketListings
+      tags: [market]
+      summary: Get marketplace listings
+      description: Returns active NFT marketplace listings
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Marketplace listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MarketListing"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +160,141 @@ components:
       required:
         - status
 
+    LeaderboardEntry:
+      type: object
+      properties:
+        rank:
+          type: integer
+        address:
+          type: string
+        totalWins:
+          type: integer
+        totalBattles:
+          type: integer
+        totalRewards:
+          type: string
+        winRate:
+          type: number
+      required:
+        - rank
+        - address
+        - totalWins
+        - totalBattles
+        - totalRewards
+        - winRate
+
+    PlayerStats:
+      type: object
+      properties:
+        address:
+          type: string
+        totalWins:
+          type: integer
+        totalBattles:
+          type: integer
+        totalRewards:
+          type: string
+        fighters:
+          type: integer
+        rank:
+          type: integer
+      required:
+        - address
+        - totalWins
+        - totalBattles
+        - totalRewards
+        - fighters
+        - rank
+
+    BattleRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        player:
+          type: string
+        fighterId:
+          type: string
+        win:
+          type: boolean
+        reward:
+          type: string
+        mode:
+          type: string
+        txHash:
+          type: string
+        timestamp:
+          type: string
+      required:
+        - id
+        - player
+        - fighterId
+        - win
+        - reward
+        - mode
+        - timestamp
+
+    RecordBattleRequest:
+      type: object
+      properties:
+        player:
+          type: string
+        fighterId:
+          type: string
+        win:
+          type: boolean
+        reward:
+          type: string
+        mode:
+          type: string
+        txHash:
+          type: string
+      required:
+        - player
+        - fighterId
+        - win
+        - reward
+        - mode
+
+    MarketListing:
+      type: object
+      properties:
+        tokenId:
+          type: string
+        seller:
+          type: string
+        price:
+          type: string
+        rarity:
+          type: string
+        strength:
+          type: integer
+        speed:
+          type: integer
+        intelligence:
+          type: integer
+        wins:
+          type: integer
+        losses:
+          type: integer
+        active:
+          type: boolean
+      required:
+        - tokenId
+        - seller
+        - price
+        - rarity
+        - strength
+        - speed
+        - intelligence
+        - wins
+        - losses
+        - active
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
